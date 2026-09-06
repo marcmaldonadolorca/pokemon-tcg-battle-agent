@@ -9,7 +9,7 @@ abierta (cierre 2026-09-13) y su writeup no se publica aquí hasta la entrega.
 
 ## Resultado
 
-**Puesto 2.138 de 6.892.** Score **690,7** con la lista `c1-grimmsnarl` y **643,3**
+**Puesto 1.328 de 6.807 (top 20 %).** Score **690,7** con la lista `c1-grimmsnarl` y **643,3**
 con `c2-alakazam` — dos mazos distintos pilotados por el mismo agente, elegidos por
 criterios distintos (uno maximiza la media, el otro el suelo: nunca por debajo de
 0,50 en ninguno de los 12 arquetipos del campo).
