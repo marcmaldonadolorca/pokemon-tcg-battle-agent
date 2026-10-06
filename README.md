@@ -1,87 +1,83 @@
-# Pokémon TCG AI Battle Challenge — agente de simulación
+# Pokémon TCG AI Battle Challenge — simulation agent
 
-Competición Kaggle de The Pokémon Company: dos convocatorias ligadas — **Simulation**
-(`pokemon-tcg-ai-battle`, agente que juega, sin premio, da medallas Knowledge) y
-**Strategy** (`pokemon-tcg-ai-battle-challenge-strategy`, writeup ≤2.000 palabras,
-8 × 30.000 USD + torneo en Tokio). Para optar al premio hay que competir en las dos
-con el mismo equipo. Este repo cubre la Simulation, ya cerrada; la Strategy sigue
-abierta (cierre 2026-09-13) y su writeup no se publica aquí hasta la entrega.
+Kaggle competition run by The Pokémon Company, in two linked calls: **Simulation**
+(`pokemon-tcg-ai-battle`, an agent that plays, no prize money, awards Knowledge medals) and
+**Strategy** (`pokemon-tcg-ai-battle-challenge-strategy`, a write-up of ≤2,000 words,
+8 × $30,000 plus a tournament in Tokyo). To be eligible for the prize you must enter both with
+the same team. This repository covers the Simulation half, now closed; the Strategy write-up is
+not published here.
 
-## Resultado
+## Result
 
-**Puesto 1.328 de 6.807 (top 20 %).** Score **690,7** con la lista `c1-grimmsnarl` y **643,3**
-con `c2-alakazam` — dos mazos distintos pilotados por el mismo agente, elegidos por
-criterios distintos (uno maximiza la media, el otro el suelo: nunca por debajo de
-0,50 en ninguno de los 12 arquetipos del campo).
+**1,328th of 6,807 (top 20%).** Score **690.7** with the `c1-grimmsnarl` list and **643.3** with
+`c2-alakazam` — two different decks piloted by the same agent, chosen by different criteria (one
+maximises the mean, the other the floor: never below 0.50 against any of the 12 archetypes in the
+field).
 
-## El candidato que se quedó fuera — y la lección de proceso
+## The candidate that was left out — and the process lesson
 
-El agente medido como mejor (`30d+RC`: corpus de 30 días + búsqueda `R_PASOS=32,
-N_CAND=5`) ganaba el **74,6% [72,4%, 76,7%]** de las partidas contra el agente de la
-ladder — por encima del que finalmente se envió. Terminó de medirse el 14-ago a las
-19:35, **15 minutos después** de que acabara el turno de la sesión que lo lanzó. El
-recordatorio automático que debía avisar de subirlo no ejecuta nada por sí mismo, y
-no había ninguna tarea programada que empaquetara y subiera sin intervención humana:
-el corte de envíos pasó con el agente del 12-ago. Postmortem completo en
+The agent measured as best (`30d+RC`: a 30-day corpus plus search with `R_PASOS=32, N_CAND=5`) won
+**74.6% [72.4%, 76.7%]** of its games against the ladder agent — above the one actually submitted.
+It finished measuring on 14 August at 19:35, **15 minutes after** the session that launched it had
+ended. The automatic reminder meant to flag the upload does not execute anything by itself, and
+there was no scheduled task to package and submit without a human present: the submission deadline
+passed with the 12 August agent. Full postmortem in
 [`reports/2026-08-17-cierre-simulation-envio-no-realizado.md`](reports/2026-08-17-cierre-simulation-envio-no-realizado.md).
 
-**Lección que se lleva a la siguiente competición:** un compromiso con plazo en
-ausencia de supervisión humana solo es real si dispara una tarea programada — un
-aviso en segundo plano informa, no ejecuta.
+**Lesson carried into the next competition:** a deadline commitment with no human supervising is
+only real if it triggers a scheduled task — a background reminder informs, it does not execute.
 
-## Arquitectura del agente
+## Agent architecture
 
-El motor de batalla (`cabt`, PyPI vía `kaggle-environments`) se sondea con
-[`arena.py`](arena.py) (harness de medición: mismos asientos intercambiados,
-intervalos de confianza, paralelización por procesos — con hilos el motor revienta
-el proceso con SIGSEGV) y [`gauntlet.py`](research/gauntlet.py) (contra los 12
-arquetipos del campo).
+The battle engine (`cabt`, on PyPI via `kaggle-environments`) is probed with
+[`arena.py`](arena.py) (the measurement harness: same seats swapped, confidence intervals,
+process-level parallelism — with threads the engine kills the process with SIGSEGV) and
+[`gauntlet.py`](research/gauntlet.py) (against the 12 archetypes of the field).
 
-Se probaron y compararon con IC95 tres familias de piloto — heurístico manual
-(`research/agentes/`), MCTS y clonado de política por imitación
-(`research/clon/`) — antes de fijar el envío final:
+Three families of pilot were tried and compared with 95% CIs — a hand-written heuristic
+(`research/agentes/`), MCTS, and policy cloning by imitation (`research/clon/`) — before fixing
+the final submission:
 
-1. **Clon de política** (`research/agentes/clon.py`) entrenado sobre partidas
-   propias con `research/clon/entrenar3.py`/`extraer.py`/`rasgos.py`.
-2. **Búsqueda encima del clon** (`research/agentes/clon_busq.py`): rollout guiado
-   por la red entrenada. Medido: red sola 0,724, búsqueda sola 0,709, **las dos
-   juntas 0,859** — los dos ejes suman en log-odds (predicho 0,865, observado
-   0,859), sin interferencia. Es el piloto final, con la red
-   `politica_7d_h384_mejorval.npz` (no versionada — se regenera entrenando).
+1. **Policy clone** (`research/agentes/clon.py`) trained on self-play games with
+   `research/clon/entrenar3.py` / `extraer.py` / `rasgos.py`.
+2. **Search on top of the clone** (`research/agentes/clon_busq.py`): a rollout guided by the
+   trained network. Measured: network alone 0.724, search alone 0.709, **the two together 0.859** —
+   the two axes add in log-odds (predicted 0.865, observed 0.859), with no interference. This is
+   the final pilot, with the network `politica_7d_h384_mejorval.npz` (not versioned — regenerate it
+   by training).
 
-   ![Red + búsqueda suman en log-odds](docs/img/pokemon-red-busqueda.png)
-3. **Selección de mazo** (`research/decks/`): `c1-grimmsnarl.csv` y
-   `c2-alakazam.csv`, las dos listas finalmente enviadas.
+   ![Network and search add in log-odds](docs/img/network-plus-search.png)
+3. **Deck selection** (`research/decks/`): `c1-grimmsnarl.csv` and `c2-alakazam.csv`, the two lists
+   actually submitted.
 
-Decisiones con números en [`DECISIONS.md`](DECISIONS.md) (18 tickets, cada uno con
-lo medido y lo descartado); tickets de trabajo en [`TASKS.md`](TASKS.md).
+Decisions with numbers in [`DECISIONS.md`](DECISIONS.md) (18 tickets, each with what was measured
+and what was discarded); working tickets in [`TASKS.md`](TASKS.md).
 
-## Limitaciones
+## Limitations
 
-- `RC` (la palanca de búsqueda que dio el 74,6%) nunca se validó a tiempo sobre
-  `c1-grimmsnarl` — todo el barrido se hizo en `c2-alakazam`; quedó sin comprobar
-  si generalizaba a la otra lista.
-- El presupuesto de tiempo por partida llegó a **595,6 s contra un banco de 600 s**
-  en la medición del candidato descartado — margen cero, cifras infladas por
-  contención y swap, sin la prueba de banco reducido que lo habría discriminado.
-- La Strategy (la mitad que reparte premio) sigue abierta: el writeup no forma
-  parte de este repo hasta que se entregue.
+- `RC` (the search lever that produced the 74.6%) was never validated in time on
+  `c1-grimmsnarl` — the whole sweep was done on `c2-alakazam`, so whether it generalises to the
+  other list was never checked.
+- The per-game time budget reached **595.6 s against a 600 s bench** when measuring the discarded
+  candidate — zero margin, with figures inflated by contention and swap, and without the
+  reduced-bench test that would have told them apart.
+- The Strategy half (the one that pays) is not covered here.
 
-## Reproducir
+## Reproducing
 
 ```bash
 uv venv .venv --python 3.12
 uv pip install --python .venv/bin/python -r requirements.txt
 ```
 
-El motor viene en `kaggle-environments` desde PyPI — no hace falta haber aceptado
-las reglas de la competición para usarlo.
+The engine ships in `kaggle-environments` from PyPI — you do not need to have accepted the
+competition rules to use it.
 
 ```bash
 kaggle competitions download -c pokemon-tcg-ai-battle-challenge-strategy -p data/raw
-.venv/bin/python arena.py            # medir un agente contra otro, IC95
-.venv/bin/python research/gauntlet.py  # un agente contra los 12 arquetipos del campo
+.venv/bin/python arena.py              # measure one agent against another, 95% CI
+.venv/bin/python research/gauntlet.py  # one agent against the 12 archetypes of the field
 ```
 
-Los datos de cartas de la competición no se versionan aquí (licencia de Pokémon:
-revocable, uso limitado a la competición, obligación de borrarlos al terminar).
+The competition's card data is not versioned here (Pokémon licence: revocable, limited to the
+competition, with an obligation to delete it afterwards).
