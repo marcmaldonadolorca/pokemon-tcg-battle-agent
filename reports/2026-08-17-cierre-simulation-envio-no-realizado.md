@@ -16,6 +16,11 @@ del **12-ago**. El envío final, autorizado por el propietario el 14-ago (`PKM-0
 | Equipos que subieron el 16-ago | **1.696** |
 | Equipos que subieron tras el corte | **0** de 6.892 (el corte era firme) |
 
+> **Nota 2026-10-21:** el puesto final confirmado por la API de Kaggle el 3-sep (leaderboard
+> recalculado tras el cierre) fue **1.328/6.807**, con score **773,9** (`c1-grimmsnarl`) y 677,1
+> (`c2-alakazam`). Las cifras de esta tabla eran las provisionales del 17-ago y se dejan como se
+> escribieron.
+
 El `deadline` que la API de Kaggle reporta para `pokemon-tcg-ai-battle` es
 **2026-08-31**, que es el cierre de la competición, no el de envíos. La evidencia de
 que el corte real fue el 16-ago es que ni un solo equipo tiene envío posterior.

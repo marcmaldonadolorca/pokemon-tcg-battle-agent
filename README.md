@@ -9,7 +9,7 @@ not published here.
 
 ## Result
 
-**1,328th of 6,807 (top 20%).** Score **690.7** with the `c1-grimmsnarl` list and **643.3** with
+**1,328th of 6,807 (top 20%).** Score **773.9** with the `c1-grimmsnarl` list and **677.1** with
 `c2-alakazam` — two different decks piloted by the same agent, chosen by different criteria (one
 maximises the mean, the other the floor: never below 0.50 against any of the 12 archetypes in the
 field).
@@ -41,7 +41,8 @@ the final submission:
 1. **Policy clone** (`research/agentes/clon.py`) trained on self-play games with
    `research/clon/entrenar3.py` / `extraer.py` / `rasgos.py`.
 2. **Search on top of the clone** (`research/agentes/clon_busq.py`): a rollout guided by the
-   trained network. Measured: network alone 0.724, search alone 0.709, **the two together 0.859** —
+   trained network. Measured against my previous agent (n = 2,000): network alone 0.724, search
+   alone 0.709, **the two together 0.859** —
    the two axes add in log-odds (predicted 0.865, observed 0.859), with no interference. This is
    the final pilot, with the network `politica_7d_h384_mejorval.npz` (not versioned — regenerate it
    by training).
