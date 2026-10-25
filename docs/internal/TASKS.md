@@ -10,7 +10,7 @@ Casilla marcada = evidencia, no intención.
 | `PKM-001` | **cerrado** — el propietario hizo Join a tiempo (verificado por CLI 2026-08-10: `userHasEntered True` en ambas divisiones) | Propietario | — |
 | `PKM-002` | **cerrado** 2026-08-12 — báscula construida y caracterizada (arena con ruido de suelo 0,4959 [0,4848, 0,5070] n=7.800; gauntlet de 12 arquetipos validado contra la ladder). Once hipótesis heurísticas medidas sin mejora | Claude | — |
 | `PKM-003` | **cerrado** 2026-08-12 — el ISMCTS solo no rinde (0,529 y 0,487 con red de valor), pero **guiado por el clon sí**: +0,709 por sí solo y 0,859 combinado con la red grande | Claude | — |
-| `PKM-004` | **cerrado sin ejecutar** 2026-08-17 — la Simulation cerro con el agente del 12-ago: puesto **2.138/6.892**, score 690,7. El candidato medido (0,7462) **no se subio**; causa raiz en `PKM-018` | Claude | vencido 2026-08-16 |
+| `PKM-004` | **cerrado sin ejecutar** 2026-08-17 — la Simulation cerro con el agente del 12-ago: puesto **2.138/6.892**, score 690,7 (provisional; final confirmado el 3-sep: **1.328/6.807**, 773,9). El candidato medido (0,7462) **no se subio**; causa raiz en `PKM-018` | Claude | vencido 2026-08-16 |
 | `PKM-007` | **cerrado** 2026-08-14 — barrido de presupuesto de búsqueda: `RC` (R=32, C=5) gana **0,6350 [0,6111, 0,6582]** al agente de la ladder; 8 configuraciones medidas | Claude | — |
 | `PKM-008` | **cerrado** 2026-08-17 — corpus de 30 dias validado en arena: `30d+RC` gana **0,7462 [0,7244, 0,7670]** n=1.600 al agente de la ladder (`scratchpad/cierre/d30rc_c2.json`). Llego 15 min tarde para el envio | Claude | — |
 | `PKM-009` | **cerrado** 2026-08-14 — `empaquetar.py --env` y verificación de que los parámetros de búsqueda viajan dentro del paquete | Claude | — |

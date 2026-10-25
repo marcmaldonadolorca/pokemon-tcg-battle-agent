@@ -32,7 +32,7 @@ _D = os.path.dirname(os.path.abspath(__file__))
 
 # Rutas tolerantes a DOS disposiciones: el repo (research/agentes + research/clon +
 # research/valor) y el paquete de envio, donde todo cae junto en una carpeta.
-# `main.py` no tiene __file__, pero los modulos que IMPORTA si (docs/empaquetado-y-envio.md).
+# `main.py` no tiene __file__, pero los modulos que IMPORTA si (docs/internal/empaquetado-y-envio.md).
 for _p in (_D, os.path.join(_D, "..", "clon"), os.path.join(_D, "..", "valor")):
     if os.path.isdir(_p) and _p not in sys.path:
         sys.path.insert(0, _p)

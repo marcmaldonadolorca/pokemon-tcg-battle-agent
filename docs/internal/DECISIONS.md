@@ -39,6 +39,9 @@ que decidia termino ese mismo dia a las **19:35** con un resultado holgado —
 la regla del IC limpio daba luz verde con dos dias de margen. **El envio no se subio.**
 La Simulation cerro con el agente del 12-ago: puesto **2.138 de 6.892**, score 690,7.
 
+> **Nota 2026-10-25:** cifras provisionales del 17-ago. El puesto final confirmado por la API de
+> Kaggle el 3-sep fue **1.328/6.807**, score **773,9** (ver la nota del informe de cierre).
+
 **Causa raiz:** el resultado llego 15 minutos despues de acabar el turno de la sesion.
 Los guardianes de segundo plano (`Bash run_in_background`, `Monitor`) **informan pero
 no ejecutan**: no reactivan una sesion dormida. Sus notificaciones se entregaron el
